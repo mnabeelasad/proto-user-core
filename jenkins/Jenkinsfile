@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build & Push') {
+            steps {
+                script {
+                    sh 'docker build -t yourdockerhub/protousercore ./user_service'
+                    sh 'docker push yourdockerhub/protousercore'
+                }
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f k8s/deployment.yaml'
+            }
+        }
+    }
+}

@@ -1,17 +1,31 @@
 pipeline {
     agent any
+
+    environment {
+        DOCKER_IMAGE = 'nabeeldev/protousercore' // ← apna DockerHub username yahan daal
+    }
+
     stages {
-        stage('Build & Push') {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/mnabeelasad/proto-user-core' // replace with actual repo
+            }
+        }
+
+        stage('Build & Push Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t yourdockerhub/protousercore ./user_service'
-                    sh 'docker push yourdockerhub/protousercore'
+                    sh "docker build -t $DOCKER_IMAGE ./user_service"
+                    sh "docker push $DOCKER_IMAGE"
                 }
             }
         }
+
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f k8s/deployment.yaml'
+                script {
+                    sh 'kubectl apply -f k8s/deployment.yaml'
+                }
             }
         }
     }

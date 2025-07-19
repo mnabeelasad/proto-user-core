@@ -1,6 +1,11 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../user_service')))
+
 import grpc
-from user_service import user_pb2
-from user_service import user_pb2_grpc
+import user_pb2
+import user_pb2_grpc
+
 
 channel = grpc.insecure_channel('localhost:50051')
 stub = user_pb2_grpc.UserServiceStub(channel)

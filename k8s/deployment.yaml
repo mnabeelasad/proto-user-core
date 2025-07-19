@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: protousercore
-        image: yourdockerhub/protousercore:latest
+        image: protousercore          
+        imagePullPolicy: Never        
         ports:
         - containerPort: 50051
 ---
